@@ -1,0 +1,163 @@
+<html>
+
+<head>
+  <style>
+    .button {
+      display: inline-block;
+      border-radius: 4px;
+      background-color: #f4511e;
+      border: none;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 14px;
+      padding: 10px;
+      width: 200px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin: 5px;
+      outline: none;
+    }
+
+    .button span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button span:after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .button:hover span {
+      padding-right: 25px;
+    }
+
+    .button:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .custom-file-upload {
+      border: 1px solid #ccc;
+      display: inline-block;
+      padding: 6px 22px;
+      cursor: pointer;
+    }
+
+    .layout {
+      text-align: center;
+    }
+
+    .control-button {
+      border-radius: 50%;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .cancel-button {
+      background-color: #555555;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    .resume-button {
+      background-color: #008cba;
+      /* Green */
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    .pause-button {
+      background-color: #ffb2b2;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 4px 2px;
+      cursor: pointer;
+
+    }
+  </style>
+  <script type="text/javascript">
+
+    function loadFileAsText(event) {
+      window.speechSynthesis.cancel();
+      var fileToLoad = document.getElementById("fileToLoad").files[0];
+      if (fileToLoad) {
+        var fileReader = new FileReader();
+        fileReader.onload = function (fileLoadedEvent) {
+          var textFromFileLoaded = fileLoadedEvent.target.result;
+          document.getElementById("inputTextToSave").innerHTML = textFromFileLoaded;
+          speakItLoud(textFromFileLoaded);
+        };
+        fileReader.readAsText(fileToLoad, "UTF-8");
+      } else {
+        alert("Please select a file first.")
+      }
+    }
+
+    function speakItLoud(text) {
+      var msg = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(msg);
+    }
+    function cancelPayer() {
+      window.speechSynthesis.cancel();
+    }
+    function pausePayer() {
+      window.speechSynthesis.pause();
+    }
+    function resumePayer() {
+      window.speechSynthesis.resume();
+    }
+
+  </script>
+</head>
+
+<body>
+  <div class="layout">
+    <h1>Welcome to Speak</h1>
+    <div>
+      <div>
+        <h2>Select a File to Hear it out:</h2>
+      </div>
+      <label for="fileToLoad" class="custom-file-upload">
+        Select a file to continue
+      </label>
+      <input type="file" id="fileToLoad" />
+      <div><button class="button" style="vertical-align:middle" onclick=loadFileAsText()>
+          <span>Let's Play It </span>
+        </button></div>
+    </div>
+    <button class="control-button cancel-button" onclick=cancelPayer()>X</button>
+    <button class="control-button pause-button" onclick=pausePayer()>||</button>
+    <button class="control-button resume-button" onclick=resumePayer()>></button>
+    <div id="inputTextToSave"></div>
+  </div>
+
+</body>
+
+</html>
